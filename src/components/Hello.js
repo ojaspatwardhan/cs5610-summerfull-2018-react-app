@@ -1,14 +1,13 @@
 import React from 'react';
 
-export default class HelloWorld extends React.Component {
-
+export default class Hello extends React.Component {
   constructor(props) {
     super(props);
-  } 
+  }
 
   render() {
     return(
-      <h1>Hello World!</h1>
-    )
+      <h1>Hello!</h1>
+    );
   }
 }
