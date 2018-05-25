@@ -9,7 +9,7 @@ export default class CourseRow extends React.Component {
     return(
       <tr>
         <td>
-          Course Row
+          {this.props.course.title}
         </td>
       </tr>
     );
