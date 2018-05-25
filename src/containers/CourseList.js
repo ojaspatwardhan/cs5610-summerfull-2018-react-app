@@ -7,29 +7,29 @@ export default class CourseList extends React.Component {
 
   constructor(props) {
     super(props);
-    this.courseService = CourseService.instance;
-    this.renderCourseRows = this.renderCourseRows.bind(this);
-    this.titleChanged = this.titleChanged.bind(this);
-    this.createCourse = this.createCourse.bind(this);
     this.state = {
       course: {title: ""},
       courses: []
     };
+    this.courseService = CourseService.instance;
+    this.renderCourseRows = this.renderCourseRows.bind(this);
+    this.titleChanged = this.titleChanged.bind(this);
+    this.createCourse = this.createCourse.bind(this);
+    this.findAllCourses = this.findAllCourses.bind(this);
+    this.deleteCourse = this.deleteCourse.bind(this);
   }
 
   componentDidMount() {
-    this.courseService.findAllCourses().then((courses) => {
-      this.setState({courses: courses});
-    });
+    this.findAllCourses();
   }
 
   renderCourseRows() {
     let courses = null;
 
     if(this.state) {
-      courses = this.state.courses.map(function(course) {
+      courses = this.state.courses.map((course) => {
         return(
-        <CourseRow key = {course.id} course = {course} />
+        <CourseRow key = {course.id} course = {course} delete = {this.deleteCourse} />
         );
       });
     }
@@ -37,6 +37,20 @@ export default class CourseList extends React.Component {
        courses
    );
 }
+
+  deleteCourse(courseId) {
+    this.courseService.deleteCourse(courseId).then(() => {this.findAllCourses();
+    });
+  }
+
+  findAllCourses() {
+   this.courseService.findAllCourses()
+       .then((courses) => {
+           this.setState({courses: courses});
+           console.log(courses);
+       });
+  }
+
 
   titleChanged(event) {
     this.setState({course: {title: event.target.value}
@@ -48,11 +62,7 @@ export default class CourseList extends React.Component {
        .createCourse(this.state.course)
        .then(() => { this.findAllCourses();
        });
-    // var newCourses = this.state.courses.slice();
-    // newCourses.push(this.state.course);
-    // this.setState({courses: newCourses});
   }
-
 
   render() {
     return(
