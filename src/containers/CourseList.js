@@ -8,7 +8,6 @@ export default class CourseList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      course: {title: ""},
       courses: []
     };
     this.courseService = CourseService.instance;
@@ -20,7 +19,9 @@ export default class CourseList extends React.Component {
   }
 
   componentDidMount() {
-    this.findAllCourses();
+    this.courseService.findAllCourses().then((courses) => {
+      this.setState({courses: courses});
+    });
   }
 
   renderCourseRows() {
@@ -29,7 +30,7 @@ export default class CourseList extends React.Component {
     if(this.state) {
       courses = this.state.courses.map((course) => {
         return(
-        <CourseRow key = {course.id} course = {course} delete = {this.deleteCourse} />
+          <CourseRow key = {course.id} course = {course} delete = {this.deleteCourse} />
         );
       });
     }
@@ -47,7 +48,6 @@ export default class CourseList extends React.Component {
    this.courseService.findAllCourses()
        .then((courses) => {
            this.setState({courses: courses});
-           console.log(courses);
        });
   }
 
@@ -66,21 +66,35 @@ export default class CourseList extends React.Component {
 
   render() {
     return(
-      <div>
-        <h2>Course List</h2>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-md-12">
+            <h2>Course List</h2>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-4">
+            <input onChange = {this.titleChanged} className = "form-control" id = "title" placeholder = "CS101" />
+          </div>
+          <div className="col-md-1">
+            <button onClick = {this.createCourse} className = "btn btn-outline-success btn-md float-right">Add</button>
+          </div>
+        </div>
+        <br />
         <table className = "table container-fluid">
           <thead>
             <tr>
               <th>
                 Title
               </th>
-            </tr>
-            <tr>
               <th>
-                <input onChange = {this.titleChanged} className = "form-control" id = "title" placeholder = "CS101" />
+                Owner
               </th>
               <th>
-                <button onClick = {this.createCourse} className = "btn btn-outline-primary btn-md">Add</button>
+                Date modified
+              </th>
+              <th>
+                Time modified
               </th>
             </tr>
           </thead>

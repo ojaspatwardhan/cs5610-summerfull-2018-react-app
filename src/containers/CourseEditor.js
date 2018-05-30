@@ -31,15 +31,7 @@ export default class CourseEditor extends React.Component {
       <div className="container-fluid">
         <div className = "row">
           <div className = "col-4">
-            <ModuleList />
-          </div>
-          <div className = "col-8">
-            <LessonTabs />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
-            <h3>Editing Course: {this.state.courseId}</h3>
+            <ModuleList courseId = {this.state.courseId} />
           </div>
         </div>
       </div>
