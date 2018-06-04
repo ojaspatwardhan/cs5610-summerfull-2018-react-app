@@ -1,18 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CourseRow from '../components/CourseRow';
+import CourseCard from '../components/CourseCard';
 import CourseService from '../services/CourseService';
+import $ from 'jquery';
 
 export default class CourseList extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      grid: false,
+      list: true,
       courseName: "",
       courses: []
     };
     this.courseService = CourseService.instance;
     this.renderCourseRows = this.renderCourseRows.bind(this);
+    this.renderCourseCards = this.renderCourseCards.bind(this);
+    this.handleLayoutChange = this.handleLayoutChange.bind(this);
     this.titleChanged = this.titleChanged.bind(this);
     this.createCourse = this.createCourse.bind(this);
     this.findAllCourses = this.findAllCourses.bind(this);
@@ -20,12 +26,17 @@ export default class CourseList extends React.Component {
     this.findCourseByCourseName = this.findCourseByCourseName.bind(this);
     this.findCourseById = this.findCourseById.bind(this);
     this.courseNameChanged = this.courseNameChanged.bind(this);
+    this.test = this.test.bind(this);
   }
 
   componentDidMount() {
     this.courseService.findAllCourses().then((courses) => {
       this.setState({courses: courses});
     });
+    console.log("List");
+    console.log(this.state.list);
+    console.log("Grid");
+    console.log(this.state.grid);
   }
 
   renderCourseRows() {
@@ -34,7 +45,7 @@ export default class CourseList extends React.Component {
     if(this.state) {
       courses = this.state.courses.map((course) => {
         return(
-          <CourseRow key = {course.id} course = {course} delete = {this.deleteCourse} />
+          <CourseRow key={course.id} course={course} delete={this.deleteCourse} />
         );
       });
     }
@@ -42,6 +53,21 @@ export default class CourseList extends React.Component {
        courses
    );
 }
+
+  renderCourseCards() {
+    let courses = null;
+
+    if(this.state.courses) {
+      courses = this.state.courses.map((course) => {
+        return(
+          <CourseCard key={course.id} course={course} delete={this.deleteCourse} />
+        );
+      });
+    }
+    return (
+      courses
+    );
+  }
 
   deleteCourse(courseId) {
     this.courseService.deleteCourse(courseId).then(() => {this.findAllCourses();
@@ -78,6 +104,24 @@ export default class CourseList extends React.Component {
     });
   }
 
+  handleLayoutChange() {
+    this.setState({
+      grid: !this.state.grid,
+      list: !this.state.list
+    }, this.test);
+  }
+
+  test() {
+    if(this.state.grid) {
+      $(".card-group").css("display", "flex")
+      $(".table").css("display", "none");
+    }
+    else {
+      $(".card-group").css("display", "none");
+      $(".table").css("display", "table");
+    }
+  }
+
   findCourseByCourseName() {
     if(this.state.courseName != "") {
       this.courseService.findCourseByCourseName(this.state.courseName).then((courses) => {
@@ -91,7 +135,7 @@ export default class CourseList extends React.Component {
 
   render() {
     return(
-      <div className="container-fluid">
+      <div id="main-div" className="container-fluid">
         <div className="row" style={{position: "relative", marginTop: "2%"}}>
           <div className="col-md-4">
             <input onChange = {this.titleChanged} className = "form-control" id = "title" placeholder = "CS101" />
@@ -104,6 +148,9 @@ export default class CourseList extends React.Component {
           </div>
           <div className="col-md-1">
             <button onClick={this.findCourseByCourseName} type="button" className="btn btn-md btn-outline-info"><i className="fa fa-search" aria-hidden="true"></i></button>
+          </div>
+          <div className="col-md-2">
+            <button onClick={this.handleLayoutChange} className="btn btn-md btn-outline-dark"><i className="fa fa-th"></i></button>
           </div>
         </div>
         <br />
@@ -131,6 +178,9 @@ export default class CourseList extends React.Component {
               </tbody>
             </table>
           </div>
+        </div>
+        <div className="card-group" style={{display: "none"}}>
+          {this.renderCourseCards()}
         </div>
       </div>
     );
