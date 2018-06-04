@@ -10,11 +10,18 @@ export default class CourseManager extends React.Component {
   constructor(props) {
     super(props);
   }
+
   render() {
     return(
       <Router>
-        <div className = "container-fluid">
-          <Link to = "/courses/list">Course Manager</Link>
+        <div>
+          <nav className="navbar navbar-light" style={{ backgroundColor: "#e3f2fd" }}>
+          <span className="navbar-brand">
+            <i className="fa fa-bars" aria-hidden="true">
+            </i>
+            <Link to = "/courses/list" style={{marginLeft: "10%", textDecoration: "none"}}>Course Manager</Link>
+          </span>
+          </nav>
           <Route path="/courses/list" component = {CourseList} />
           <Route path="/courses/:courseId/edit" component = {CourseEditor} />
         </div>

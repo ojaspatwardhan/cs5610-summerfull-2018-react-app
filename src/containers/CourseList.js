@@ -67,12 +67,7 @@ export default class CourseList extends React.Component {
   render() {
     return(
       <div className="container-fluid">
-        <div className="row">
-          <div className="col-md-12">
-            <h2>Course List</h2>
-          </div>
-        </div>
-        <div className="row">
+        <div className="row" style={{position: "relative", marginTop: "2%"}}>
           <div className="col-md-4">
             <input onChange = {this.titleChanged} className = "form-control" id = "title" placeholder = "CS101" />
           </div>
