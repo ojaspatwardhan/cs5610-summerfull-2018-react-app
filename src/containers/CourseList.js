@@ -97,7 +97,7 @@ export default class CourseList extends React.Component {
             <input onChange = {this.titleChanged} className = "form-control" id = "title" placeholder = "CS101" />
           </div>
           <div className="col-md-1">
-            <button onClick = {this.createCourse} className = "btn btn-outline-success btn-md float-right">Add</button>
+            <button onClick = {this.createCourse} className = "btn btn-outline-success btn-md"><i className="fa fa-plus-square"></i></button>
           </div>
           <div className="col-md-4">
             <input onChange={this.courseNameChanged} className="form-control" placeholder="Search for course" />

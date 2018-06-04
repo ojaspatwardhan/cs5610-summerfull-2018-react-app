@@ -17,8 +17,7 @@ export default class CourseManager extends React.Component {
         <div>
           <nav className="navbar navbar-light" style={{ backgroundColor: "#e3f2fd" }}>
           <span className="navbar-brand">
-            <i className="fa fa-bars" aria-hidden="true">
-            </i>
+            <button className="btn btn-md btn-outline-dark"><i className="fa fa-bars" aria-hidden="true"></i></button>
             <Link to = "/courses/list" style={{marginLeft: "10%", textDecoration: "none"}}>Course Manager</Link>
           </span>
           </nav>

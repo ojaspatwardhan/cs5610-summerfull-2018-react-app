@@ -40,7 +40,7 @@ export default class CourseRow extends React.Component {
           {this.state.time}
         </td>
         <td>
-          <button onClick={() => this.props.delete(this.props.course.id)} className = "btn btn-outline-danger btn-md">Delete</button>
+          <button onClick={() => this.props.delete(this.props.course.id)} className = "btn btn-outline-danger btn-md"><i className="fa fa-trash-o"></i></button>
         </td>
       </tr>
     );
