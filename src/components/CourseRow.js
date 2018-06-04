@@ -26,7 +26,7 @@ export default class CourseRow extends React.Component {
     return(
       <tr>
         <td>
-          <Link to={`/courses/${this.props.course.id}/edit`}>
+          <Link to={`/courses/${this.props.course.id}/edit`} style={{textDecoration: "none"}}>
             {this.props.course.title}
           </Link>
         </td>

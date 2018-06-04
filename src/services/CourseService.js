@@ -1,5 +1,6 @@
 let _singleton = Symbol();
 const COURSE_API_URL = 'http://localhost:8080/api/course';
+const COURSE_API_URL_2 = "http://localhost:8080/api/course/findCourseByCourseName/courseName"
 
 export default class CourseService {
    constructor(singletonToken) {
@@ -32,13 +33,18 @@ export default class CourseService {
    }).then(function (response) {
        return response;
    })
-
-    }
+  }
 
     findAllCourses() {
         return fetch(COURSE_API_URL)
             .then(function(response){
                 return response.json();
             });
+    }
+
+    findCourseByCourseName(courseName) {
+      return fetch(COURSE_API_URL_2.replace("courseName", courseName)).then(function (response) {
+        return response.json();
+      });
     }
 }

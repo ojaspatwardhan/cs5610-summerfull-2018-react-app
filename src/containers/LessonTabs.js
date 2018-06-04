@@ -94,10 +94,10 @@ export default class LessonTabs extends React.Component {
         <ul className="nav nav-pills" style={{position: "relative", marginTop: "10%"}}>
           {this.renderListOfLessons()}
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-md-9">
               <input className="form-control" placeholder="Lesson name" onChange={this.setLessonTitle} />
             </div>
-            <div className="col-md-6">
+            <div className="col-md-3">
               <button onClick={this.createLesson} className="btn btn-md btn-outline-primary" style={{marginLeft: "2%"}}><i className="fa fa-plus-circle" aria-hidden="true"></i></button>
             </div>
           </div>

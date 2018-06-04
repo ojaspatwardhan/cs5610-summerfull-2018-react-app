@@ -8,6 +8,7 @@ export default class CourseList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      courseName: "",
       courses: []
     };
     this.courseService = CourseService.instance;
@@ -16,6 +17,9 @@ export default class CourseList extends React.Component {
     this.createCourse = this.createCourse.bind(this);
     this.findAllCourses = this.findAllCourses.bind(this);
     this.deleteCourse = this.deleteCourse.bind(this);
+    this.findCourseByCourseName = this.findCourseByCourseName.bind(this);
+    this.findCourseById = this.findCourseById.bind(this);
+    this.courseNameChanged = this.courseNameChanged.bind(this);
   }
 
   componentDidMount() {
@@ -64,6 +68,27 @@ export default class CourseList extends React.Component {
        });
   }
 
+  findCourseById() {
+
+  }
+
+  courseNameChanged(event) {
+    this.setState({
+      courseName: event.target.value
+    });
+  }
+
+  findCourseByCourseName() {
+    if(this.state.courseName != "") {
+      this.courseService.findCourseByCourseName(this.state.courseName).then((courses) => {
+        this.setState({courses: courses});
+      });
+    }
+    else {
+      this.findAllCourses();
+    }
+  }
+
   render() {
     return(
       <div className="container-fluid">
@@ -74,29 +99,39 @@ export default class CourseList extends React.Component {
           <div className="col-md-1">
             <button onClick = {this.createCourse} className = "btn btn-outline-success btn-md float-right">Add</button>
           </div>
+          <div className="col-md-4">
+            <input onChange={this.courseNameChanged} className="form-control" placeholder="Search for course" />
+          </div>
+          <div className="col-md-1">
+            <button onClick={this.findCourseByCourseName} type="button" className="btn btn-md btn-outline-info"><i className="fa fa-search" aria-hidden="true"></i></button>
+          </div>
         </div>
         <br />
-        <table className = "table container-fluid">
-          <thead>
-            <tr>
-              <th>
-                Title
-              </th>
-              <th>
-                Owner
-              </th>
-              <th>
-                Date modified
-              </th>
-              <th>
-                Time modified
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.renderCourseRows()}
-          </tbody>
-        </table>
+        <div className="row">
+          <div className="col-md-12">
+            <table className = "table">
+              <thead>
+                <tr>
+                  <th>
+                    Title
+                  </th>
+                  <th>
+                    Owner
+                  </th>
+                  <th>
+                    Date modified
+                  </th>
+                  <th>
+                    Time modified
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.renderCourseRows()}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     );
   }

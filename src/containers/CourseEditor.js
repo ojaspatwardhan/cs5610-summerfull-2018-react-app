@@ -31,7 +31,7 @@ export default class CourseEditor extends React.Component {
     return(
       <Router>
         <div className = "row">
-          <div className = "col-4">
+          <div className = "col-4" style={{borderRight: "4px solid black", height: "100%"}}>
             <ModuleList courseId={this.state.courseId} />
           </div>
           <div className = "col-8">
