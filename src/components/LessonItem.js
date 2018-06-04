@@ -3,16 +3,6 @@ import React from 'react';
 export default class LessonItem extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      activeItem: -1
-    };
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick(id) {
-    this.setState({
-      activeItem: id
-    });
   }
 
   render() {

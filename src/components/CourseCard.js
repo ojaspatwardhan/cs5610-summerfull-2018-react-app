@@ -25,10 +25,9 @@ export default class CourseCard extends React.Component {
     return(
       <div className = "card"
         style={{width: '10rem'}}>
-        <img className = "card-img-top"
-          src = "" />
         <div className = "card-body">
           <div className = "card-title">
+            <i className="fa fa-university" aria-hidden="true"></i>
             <Link to={`/courses/${this.props.course.id}/edit`} style={{textDecoration: "none"}}>
               <h4>{this.props.course.title}</h4>
             </Link>

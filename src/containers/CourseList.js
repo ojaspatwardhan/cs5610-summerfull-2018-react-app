@@ -2,14 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CourseRow from '../components/CourseRow';
 import CourseCard from '../components/CourseCard';
-import CourseService from '../services/CourseService';
+import CourseService from '../services/CourseServiceClient';
 import $ from 'jquery';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 export default class CourseList extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      dropdownOpen: false,
       grid: false,
       list: true,
       courseName: "",
@@ -26,17 +28,20 @@ export default class CourseList extends React.Component {
     this.findCourseByCourseName = this.findCourseByCourseName.bind(this);
     this.findCourseById = this.findCourseById.bind(this);
     this.courseNameChanged = this.courseNameChanged.bind(this);
-    this.test = this.test.bind(this);
+    this.changeLayout = this.changeLayout.bind(this);
+    this.toggle = this.toggle.bind(this);
+  }
+
+  toggle() {
+    this.setState(prevState => ({
+      dropdownOpen: !prevState.dropdownOpen
+    }));
   }
 
   componentDidMount() {
     this.courseService.findAllCourses().then((courses) => {
       this.setState({courses: courses});
     });
-    console.log("List");
-    console.log(this.state.list);
-    console.log("Grid");
-    console.log(this.state.grid);
   }
 
   renderCourseRows() {
@@ -108,10 +113,10 @@ export default class CourseList extends React.Component {
     this.setState({
       grid: !this.state.grid,
       list: !this.state.list
-    }, this.test);
+    }, this.changeLayout);
   }
 
-  test() {
+  changeLayout() {
     if(this.state.grid) {
       $(".card-group").css("display", "flex")
       $(".table").css("display", "none");
@@ -137,20 +142,33 @@ export default class CourseList extends React.Component {
     return(
       <div id="main-div" className="container-fluid">
         <div className="row" style={{position: "relative", marginTop: "2%"}}>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <input onChange = {this.titleChanged} className = "form-control" id = "title" placeholder = "CS101" />
           </div>
           <div className="col-md-1">
             <button onClick = {this.createCourse} className = "btn btn-outline-success btn-md"><i className="fa fa-plus-square"></i></button>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <input onChange={this.courseNameChanged} className="form-control" placeholder="Search for course" />
           </div>
           <div className="col-md-1">
             <button onClick={this.findCourseByCourseName} type="button" className="btn btn-md btn-outline-info"><i className="fa fa-search" aria-hidden="true"></i></button>
           </div>
-          <div className="col-md-2">
+          <div className="col-md-1">
             <button onClick={this.handleLayoutChange} className="btn btn-md btn-outline-dark"><i className="fa fa-th"></i></button>
+          </div>
+          <div className="col-md-3">
+            <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+              <DropdownToggle outline color="primary" caret>
+                Action
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem header>Action Controls</DropdownItem>
+                <DropdownItem>Edit</DropdownItem>
+                <DropdownItem>Rename</DropdownItem>
+                <DropdownItem>Delete</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </div>
         </div>
         <br />

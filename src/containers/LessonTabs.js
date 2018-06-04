@@ -1,6 +1,6 @@
 import React from 'react';
 import LessonItem from '../components/LessonItem';
-import LessonService from '../services/LessonService';
+import LessonService from '../services/LessonServiceClient';
 
 export default class LessonTabs extends React.Component {
   constructor(props) {

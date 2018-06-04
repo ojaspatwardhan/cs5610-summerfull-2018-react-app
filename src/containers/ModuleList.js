@@ -1,6 +1,6 @@
 import React from 'react';
 import ModuleListItem from '../components/ModuleListItem';
-import ModuleService from '../services/ModuleService';
+import ModuleService from '../services/ModuleServiceClient';
 import './ModuleList.css';
 
 export default class ModuleList extends React.Component {
