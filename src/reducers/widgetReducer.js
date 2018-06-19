@@ -1,4 +1,5 @@
 import * as constants from '../constants/constants';
+import $ from 'jquery';
 
 export const widgetReducer = (state = {widgets: [], preview: false}, action) => {
   let newState
@@ -14,11 +15,13 @@ export const widgetReducer = (state = {widgets: [], preview: false}, action) => 
         }
       })
       return state
+
     case constants.PREVIEW:
       return {
         widgets: state.widgets,
         preview: !state.preview
       }
+
     case constants.HEADING_TEXT_CHANGED:
       return {
         widgets: state.widgets.map(widget => {
@@ -28,6 +31,7 @@ export const widgetReducer = (state = {widgets: [], preview: false}, action) => 
           return Object.assign({}, widget )
         })
       }
+
       case constants.PARAGRAPH_TEXT_CHANGED:
         return {
           widgets: state.widgets.map(widget => {
@@ -37,6 +41,7 @@ export const widgetReducer = (state = {widgets: [], preview: false}, action) => 
             return Object.assign({}, widget )
           })
         }
+
     case constants.HEADING_SIZE_CHANGED:
       return {
         widgets: state.widgets.map(widget => {
@@ -46,6 +51,7 @@ export const widgetReducer = (state = {widgets: [], preview: false}, action) => 
           return Object.assign({}, widget)
         })
       }
+
     case constants.LIST_TYPE_CHANGED:
       return {
         widgets: state.widgets.map(widget => {
@@ -55,6 +61,7 @@ export const widgetReducer = (state = {widgets: [], preview: false}, action) => 
           return Object.assign({}, widget)
         })
       }
+
     case constants.LINK_TEXT_CHANGED:
       return {
         widgets: state.widgets.map(widget => {
@@ -64,6 +71,7 @@ export const widgetReducer = (state = {widgets: [], preview: false}, action) => 
           return Object.assign({}, widget)
         })
       }
+
     case constants.SELECT_WIDGET_TYPE:
       let newState = {
         widgets: state.widgets.filter(widget => {
@@ -74,13 +82,30 @@ export const widgetReducer = (state = {widgets: [], preview: false}, action) => 
         })
       }
       return JSON.parse(JSON.stringify(newState));
+
     case constants.ADD_WIDGET:
+      let widgetOrder
+      if(state.widgets.length == 0) {
+        widgetOrder = 0
+      }
+      else {
+        widgetOrder = state.widgets[state.widgets.length - 1].widgetOrder + 1
+      }
       return {
         widgets: [
           ...state.widgets,
-          {id: state.widgets.length + 1, text: "Default text", title: "New widget", widgetType: "Paragraph", size: "2", listType: "2", linkText: "Link text"}
+          {id: state.widgets.length + 1,
+            text: "Default text",
+            title: "New widget",
+            widgetType: "Paragraph",
+            size: "2",
+            listType: "2",
+            linkText: "Link text",
+            widgetOrder: widgetOrder
+          }
         ]
       }
+
     case constants.DELETE_WIDGET:
     let deleteURL = "http://localhost:8080/api/widget/ID"
     deleteURL = deleteURL.replace("ID", action.id)
@@ -95,6 +120,34 @@ export const widgetReducer = (state = {widgets: [], preview: false}, action) => 
         ))
       }
 
+    case constants.MOVE_UP:
+      let index = state.widgets.indexOf(action.widget);
+      if(index==0){
+          return state;
+      }
+      else{
+
+          newState = JSON.parse(JSON.stringify(state))
+          newState.widgets.move(index, index - 1);
+          newState.widgets[index].widgetOrder = index;
+          newState.widgets[index - 1].widgetOrder = index - 1;
+          return newState;
+      }
+
+    case constants.MOVE_DOWN:
+      index = state.widgets.indexOf(action.widget);
+      if(index==state.widgets.length-1){
+          return state;
+      }
+      else{
+
+          newState = JSON.parse(JSON.stringify(state))
+          newState.widgets.move(index, index + 1);
+          newState.widgets[index].widgetOrder = index;
+          newState.widgets[index + 1].widgetOrder = index + 1;
+          return newState;
+      }
+
     case constants.FIND_ALL_WIDGETS:
       newState = Object.assign({}, state)
       newState.widgets = action.widgets
@@ -103,3 +156,8 @@ export const widgetReducer = (state = {widgets: [], preview: false}, action) => 
     default: return state
   }
 }
+
+Array.prototype.move
+    = function (from, to) {
+    this.splice(to, 0, this.splice(from, 1)[0]);
+};

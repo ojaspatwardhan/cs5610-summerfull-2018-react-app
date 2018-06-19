@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { DELETE_WIDGET } from '../constants/constants';
-import { linkTextChanged, listTypeChanged, paragraphTextChanged, headingTextChanged, headingSizeChanged } from "../actions/actions";
+import { moveDown, moveUp, linkTextChanged, listTypeChanged, paragraphTextChanged, headingTextChanged, headingSizeChanged } from "../actions/actions";
 
 const Heading = ({preview, widget, headingSizeChanged, headingTextChanged}) => {
   let selectElem
@@ -31,7 +31,7 @@ const Paragraph = ({preview, widget, paragraphTextChanged}) => {
     <div>
       <div hidden={preview}>
         <h3>Paragraph</h3>
-        <input placeholder="Paragraph text" onChange={() => paragraphTextChanged(widget.id, inputElement.value)} ref={node => inputElement=node} />
+        <textarea placeholder="Paragraph text" onChange={() => paragraphTextChanged(widget.id, inputElement.value)} ref={node => inputElement=node} />
       </div>
       <h3>Preview</h3>
       <div className="form-control">
@@ -111,7 +111,8 @@ const Link = ({preview, widget, headingTextChanged, linkTextChanged}) => {
   );
 }
 
-const stateToPropsMapper = state => ({
+const stateToPropsMapper = (state) => ({
+  widgetProps: state.widgets,
   preview: state.preview
 })
 
@@ -129,25 +130,31 @@ const ListContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(List)
 const ImageContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Image)
 const LinkContainer = connect(stateToPropsMapper, dispatchToPropsMapper)(Link)
 
-const Widget = ({preview, widget, dispatch}) => {
+const Widget = ({widgetProps, preview, widget, dispatch}) => {
   let selectElement
   return(
-    <li>
+    <div className="form-control" style={{position: "relative", marginTop: "5px"}}>
       <div hidden={preview}>
-        {widget.title}
         <select
           value={widget.widgetType}
           onChange={e => dispatch({type: "SELECT_WIDGET_TYPE", id: widget.id, widgetType: selectElement.value})}
-          ref={node => selectElement=node}>
+          ref={node => selectElement=node} style={{position: "relative", marginLeft: "10px"}}>
           <option>Heading</option>
           <option selected>Paragraph</option>
           <option>List</option>
           <option>Image</option>
           <option>Link</option>
         </select>
+        {widget.widgetOrder}
         <button className="btn btn-sm btn-outline-danger" onClick={e => (
             dispatch({type: DELETE_WIDGET, id: widget.id})
-          )}>Delete widget</button>
+          )} style={{position: "relative", marginLeft: "20px"}}>Delete widget</button>
+        <div style={{display: widget.widgetOrder == 0 ? "none" : ""}}>
+          <button className="btn btn-outline-info btn-sm" onClick={() => {dispatch(moveUp(widget))}}><i className="fa fa-arrow-up"></i></button>
+        </div>
+        <div style={{display: widget.widgetOrder == widgetProps.length-1 ? "none" : ""}}>
+          <button className="btn btn-outline-info btn-sm" onClick={() => {dispatch(moveDown(widget))}}><i className="fa fa-arrow-down"></i></button>
+        </div>
       </div>
       <div>
         {widget.widgetType === "Heading" && <HeadingContainer widget={widget} />}
@@ -156,8 +163,8 @@ const Widget = ({preview, widget, dispatch}) => {
         {widget.widgetType === "Image" && <ImageContainer widget={widget} />}
         {widget.widgetType === "Link" && <LinkContainer widget={widget} />}
       </div>
-    </li>
+    </div>
   )
 }
 
-export const WidgetContainer = connect()(Widget);
+export const WidgetContainer = connect(stateToPropsMapper, null)(Widget);

@@ -24,6 +24,18 @@ export const linkTextChanged = (dispatch, widgetId, newLinkText) => (
   dispatch({type: constants.LINK_TEXT_CHANGED, id: widgetId, linkText: newLinkText})
 )
 
+export const moveUp = widget => {
+  return {
+    type: constants.MOVE_UP, widget: widget
+  }
+}
+
+export const moveDown = widget => {
+  return {
+    type: constants.MOVE_DOWN, widget: widget
+  }
+}
+
 export const findAllWidgets = ({dispatch, lessonId}) => {
   var fetchURL = "http://localhost:8080/api/widget/ID"
   fetchURL = fetchURL.replace("ID", lessonId);

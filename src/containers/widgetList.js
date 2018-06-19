@@ -13,14 +13,14 @@ class WidgetList extends React.Component {
     return(
       <div>
         <h1>Widget list</h1>
-        <button className="btn btn-outline-dark btn-sm" hidden={this.props.previewMode} onClick={() => this.props.save(this.props.lessonId)}>Save</button>
-        <button className="btn btn-sm btn-outline-dark" onClick={this.props.preview}>Preview</button>
+        <button className="btn btn-outline-success btn-sm" hidden={this.props.previewMode} onClick={() => this.props.save(this.props.lessonId)}>Save</button>
+        <button className="btn btn-sm btn-outline-dark" onClick={this.props.preview} style={{position: "relative", marginLeft: "2%"}}>Preview</button>
         <ul>
           {this.props.widgets.map(widget => (
             <WidgetContainer preview={this.props.previewMode} widget={widget} key={widget.id} />
           ))}
         </ul>
-        <button className="btn btn-sm btn-primary" onClick={this.props.addWidget}>Add Widget</button>
+        <button className="btn btn-sm btn-primary" onClick={this.props.addWidget} style={{position: "relative", marginTop: "2%"}}>Add Widget</button>
       </div>
     );
   }
