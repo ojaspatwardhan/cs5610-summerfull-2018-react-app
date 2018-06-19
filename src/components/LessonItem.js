@@ -28,7 +28,7 @@ export default class LessonItem extends React.Component {
               <button type="button" onClick={() => this.props.delete(this.props.lesson.id)} className="btn btn-sm btn-outline-danger"><i className="fa fa-minus-square" aria-hidden="true"></i></button>
             </a>
           </li>
-          <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>Toggle</Button>
+          <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>Toggle Widget List</Button>
         <Collapse isOpen={this.state.collapse}>
           <Card>
             <CardBody>
