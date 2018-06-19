@@ -37,7 +37,7 @@ export const moveDown = widget => {
 }
 
 export const findAllWidgets = ({dispatch, lessonId}) => {
-  var fetchURL = "http://localhost:8080/api/widget/ID"
+  var fetchURL = "https://cs5610-summer-2018-pat-ojas.herokuapp.com/api/widget/ID"
   fetchURL = fetchURL.replace("ID", lessonId);
   fetch(fetchURL).then(
     response => (response.json())).then(

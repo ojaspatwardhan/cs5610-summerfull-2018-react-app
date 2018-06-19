@@ -5,7 +5,7 @@ export const widgetReducer = (state = {widgets: [], preview: false}, action) => 
   let newState
   switch(action.type) {
     case constants.SAVE:
-      let saveURL = "http://localhost:8080/api/widget/save/ID"
+      let saveURL = "https://cs5610-summer-2018-pat-ojas.herokuapp.com/api/widget/save/ID"
       saveURL = saveURL.replace("ID", action.lessonId)
       fetch(saveURL, {
         method: "POST",
@@ -107,7 +107,7 @@ export const widgetReducer = (state = {widgets: [], preview: false}, action) => 
       }
 
     case constants.DELETE_WIDGET:
-    let deleteURL = "http://localhost:8080/api/widget/ID"
+    let deleteURL = "https://cs5610-summer-2018-pat-ojas.herokuapp.com/api/widget/ID"
     deleteURL = deleteURL.replace("ID", action.id)
     fetch(deleteURL, {
               method: 'DELETE',
