@@ -145,7 +145,6 @@ const Widget = ({widgetProps, preview, widget, dispatch}) => {
           <option>Image</option>
           <option>Link</option>
         </select>
-        {widget.widgetOrder}
         <button className="btn btn-sm btn-outline-danger" onClick={e => (
             dispatch({type: DELETE_WIDGET, id: widget.id})
           )} style={{position: "relative", marginLeft: "20px"}}>Delete widget</button>
